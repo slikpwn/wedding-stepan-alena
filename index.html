@@ -73,27 +73,15 @@
       z-index: 10;
       background: var(--bg);
       cursor: pointer;
-      transition: opacity .8s ease, visibility .8s ease;
-    }
-    /* Flap animation */
-    .env-flap {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      /* height = top triangle = ~52% of viewport */
-      height: 52%;
+      transition: opacity 0.7s ease, visibility 0.7s ease, transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
       transform-origin: top center;
-      transform: rotateX(0deg);
-      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-      pointer-events: none;
-      /* perspective needed on parent */
     }
-    #envelope-overlay {
-      perspective: 900px;
+    /* Opening: fold up like a flap */
+    #envelope-overlay.opening {
+      transform: perspective(900px) rotateX(-8deg) scaleY(0.95);
+      opacity: 0.6;
     }
-    #envelope-overlay.opening .env-flap {
-      transform: rotateX(-160deg);
-    }
-    #envelope-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    #envelope-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; transform: perspective(900px) rotateX(-12deg) translateY(-8%); }
 
     /* SVG envelope fills full screen */
     .env-svg {
@@ -1299,25 +1287,16 @@
 </head>
 <body>
   <div id="envelope-overlay">
-    <!-- Full-screen envelope lines (static background) -->
+    <!-- Full-screen envelope lines -->
     <svg class="env-svg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- bottom-left corner → center -->
+      <line x1="0" y1="0" x2="500" y2="370" stroke="#66000e" stroke-width="1"/>
+      <line x1="1000" y1="0" x2="500" y2="370" stroke="#66000e" stroke-width="1"/>
       <line x1="0" y1="700" x2="500" y2="370" stroke="#66000e" stroke-width="1"/>
-      <!-- bottom-right corner → center -->
       <line x1="1000" y1="700" x2="500" y2="370" stroke="#66000e" stroke-width="1"/>
     </svg>
 
-    <!-- Flap: upper triangle that folds up on open -->
-    <div class="env-flap" id="envFlap">
-      <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- top-left corner → center -->
-        <line x1="0" y1="0" x2="500" y2="370" stroke="#66000e" stroke-width="1"/>
-        <!-- top-right corner → center -->
-        <line x1="1000" y1="0" x2="500" y2="370" stroke="#66000e" stroke-width="1"/>
-      </svg>
-      <!-- Script text lives inside the flap -->
-      <p class="env-top">Приглашаем на<br>нашу свадьбу</p>
-    </div>
+    <!-- Script text in upper triangle -->
+    <p class="env-top">Приглашаем на<br>нашу свадьбу</p>
 
     <!-- Wax seal at center intersection -->
     <button class="seal" id="openBtn" aria-label="Открыть приглашение">
