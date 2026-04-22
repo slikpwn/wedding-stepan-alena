@@ -1193,8 +1193,27 @@
       background: rgba(254, 249, 243, 1);
     }
     .music-btn svg {
-      width: 18px;
-      height: 18px;
+      width: 42px;
+      height: 42px;
+      display: block;
+    }
+    /* Circular text on vinyl */
+    .vinyl-text {
+      font-family: var(--font-main);
+      font-size: 3.5px;
+      font-weight: 500;
+      letter-spacing: 0.55px;
+      text-transform: uppercase;
+      fill: #66000e;
+      opacity: 0.75;
+    }
+    .vinyl-text-stop {
+      display: none;
+    }
+    .music-btn.playing .vinyl-text-play {
+      display: none;
+    }
+    .music-btn.playing .vinyl-text-stop {
       display: block;
     }
     /* Spinning vinyl animation when playing */
@@ -1695,16 +1714,32 @@
 
   <!-- Music player button -->
   <button class="music-btn" id="musicBtn" aria-label="Включить музыку">
-    <!-- Vinyl / note icon — switches state -->
     <svg class="icon-vinyl" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Path for circular text — slightly inside outer ring -->
+        <path id="vinyl-arc-play"
+          d="M 12,12 m -8.2,0 a 8.2,8.2 0 1,1 16.4,0 a 8.2,8.2 0 1,1 -16.4,0"
+        />
+        <path id="vinyl-arc-stop"
+          d="M 12,12 m -8.2,0 a 8.2,8.2 0 1,1 16.4,0 a 8.2,8.2 0 1,1 -16.4,0"
+        />
+      </defs>
       <!-- Outer circle -->
       <circle cx="12" cy="12" r="10" stroke="#66000e" stroke-width="1.4"/>
       <!-- Inner circle -->
       <circle cx="12" cy="12" r="3.5" stroke="#66000e" stroke-width="1.4"/>
       <!-- Center dot -->
       <circle cx="12" cy="12" r="1" fill="#66000e"/>
-      <!-- Groove lines -->
+      <!-- Groove -->
       <circle cx="12" cy="12" r="6.5" stroke="#66000e" stroke-width="0.7" stroke-dasharray="2 3"/>
+      <!-- Text: ВКЛЮЧИТЬ МУЗЫКУ (shown when paused) -->
+      <text class="vinyl-text vinyl-text-play">
+        <textPath href="#vinyl-arc-play" startOffset="50%" text-anchor="middle">♦ ВКЛЮЧИТЬ МУЗЫКУ ♦</textPath>
+      </text>
+      <!-- Text: ОСТАНОВИТЬ (shown when playing) -->
+      <text class="vinyl-text vinyl-text-stop">
+        <textPath href="#vinyl-arc-stop" startOffset="50%" text-anchor="middle">♦ ОСТАНОВИТЬ МУЗЫКУ ♦</textPath>
+      </text>
     </svg>
   </button>
 
