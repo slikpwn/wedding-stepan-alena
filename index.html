@@ -590,7 +590,8 @@
     /* Screen 7 — Dress Code */
     .dresscode-section {
       background: var(--bg);
-      padding: clamp(64px, 14vw, 88px) var(--section-px) clamp(64px, 14vw, 88px);
+      /* margin-top handled by global section rule — no extra top padding needed */
+      padding: 0 var(--section-px) clamp(64px, 14vw, 88px);
       text-align: center;
     }
     .dc-title {
