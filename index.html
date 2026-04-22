@@ -1349,7 +1349,7 @@
 
       <p class="rsvp-sub" data-r="up" data-d="2">Подтвердите ваше присутствие до 30 мая 2026 г., это поможет нам в организации торжества</p>
 
-      <form class="rsvp-form">
+      <form class="rsvp-form" id="rsvpForm">
 
         <!-- 1. Name -->
         <div class="rsvp-group" data-r="up" data-d="3">
@@ -1385,9 +1385,15 @@
           </div>
         </div>
 
-        <button class="rsvp-submit" data-r="up" data-d="7" type="submit">Отправить</button>
+        <button class="rsvp-submit" data-r="up" data-d="7" type="submit" id="rsvpBtn">Отправить</button>
 
       </form>
+
+      <!-- Success message -->
+      <div id="rsvpSuccess" style="display:none; text-align:center; padding: 32px 0;">
+        <p style="font-family:'Great Vibes',cursive; font-size:clamp(2rem,8vw,3rem); color:#66000e; line-height:1.2; margin:0 0 12px;">Спасибо!</p>
+        <p style="font-family:'Jost',sans-serif; font-size:14px; font-weight:300; color:#3a2020; line-height:1.7;">Мы получили вашу анкету<br>и будем вас ждать ♡</p>
+      </div>
     </section>
 
     <!-- Block 9: Final -->
@@ -1456,6 +1462,8 @@
     <div class="page-slider-fill" id="pageSliderFill"></div>
   </div>
 
+  <!-- config.js не коммитится в git, хранит RSVP URL -->
+  <script src="config.js"></script>
   <script>
     const overlay  = document.getElementById("envelope-overlay");
     const content  = document.getElementById("main-content");
@@ -1512,6 +1520,39 @@
     }
     window.addEventListener("scroll", updatePageSlider, { passive: true });
     updatePageSlider();
+
+    /* ---- RSVP Form submit ---- */
+    const SCRIPT_URL = window.__RSVP_URL__ || "";
+
+    document.getElementById("rsvpForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById("rsvpBtn");
+      btn.textContent = "Отправляем...";
+      btn.disabled = true;
+
+      const form = e.target;
+      const name       = form.querySelector("input[type=text]").value.trim();
+      const attendance = form.querySelector("input[name=visit]:checked")?.nextSibling?.textContent?.trim() || "";
+      const allergies  = form.querySelectorAll("input[type=text]")[1]?.value.trim() || "";
+      const drinks     = [...form.querySelectorAll("input[type=checkbox]:checked")]
+                           .map(c => c.nextSibling?.textContent?.trim()).filter(Boolean).join(", ");
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, attendance, allergies, drinks })
+        });
+        // no-cors means we can’t read response, but if no exception — it went through
+        document.getElementById("rsvpForm").style.display = "none";
+        document.getElementById("rsvpSuccess").style.display = "block";
+      } catch (err) {
+        btn.textContent = "Отправить";
+        btn.disabled = false;
+        alert("Произошла ошибка. Попробуйте ещё раз.");
+      }
+    });
   </script>
 </body>
 </html>
