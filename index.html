@@ -423,7 +423,7 @@
       margin-bottom: 34px;
       position: relative;
       box-sizing: border-box;
-      overflow-x: hidden;
+      /* no overflow — let page scroll naturally */
     }
     .timing-scallop { display: none; } /* replaced by ::after */
     .timing-section::after {
@@ -797,19 +797,23 @@
     }
 
     /* Screen 9 — Final photo */
+    /* Full-bleed photo section — breaks out of .page container */
     .final-photo-section {
       background: var(--bg);
       padding: 0;
       margin: 0;
+      /* break out of the .page max-width */
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      box-sizing: border-box;
     }
     .final-photo {
       display: block;
       width: 100%;
-      max-width: 100%;
+      /* portrait crop, full-bleed */
       aspect-ratio: 3 / 4;
-      margin: 0 auto;
       object-fit: cover;
-      object-position: center top;
+      object-position: center 20%;
       filter: grayscale(1) contrast(1.1);
       background: linear-gradient(145deg, #dfdfdf, #bdbdbd);
     }
@@ -842,8 +846,12 @@
       display: block;
       margin-top: -4px;
       text-align: right;
-      margin-right: clamp(0px, 4vw, 40px);
-      line-height: 1;
+      /* padding-right prevents italic tail from clipping */
+      padding-right: clamp(12px, 4vw, 32px);
+      margin-right: 0;
+      line-height: 1.2;
+      /* ensure overflow is visible so italic tail shows */
+      overflow: visible;
     }
     .rsvp-sub {
       font-family: var(--font-main);
@@ -1048,6 +1056,14 @@
       overflow-x: hidden;
     }
 
+    /* Hide native browser scrollbar everywhere */
+    html {
+      scrollbar-width: none; /* Firefox */
+    }
+    html::-webkit-scrollbar {
+      display: none; /* Chrome/Safari/Edge */
+    }
+
     /* Page slider */
     .page-slider {
       position: fixed;
@@ -1061,8 +1077,8 @@
       z-index: 30;
       overflow: visible;
       opacity: 0;
+      pointer-events: none;
       transition: opacity .25s ease;
-      /* prevent it from causing horizontal scroll */
       max-width: 3px;
     }
     body.unlocked .page-slider {
@@ -1535,6 +1551,9 @@
 
     /* ---- Progress bar ---- */
     function updatePageSlider() {
+      // Only run after envelope is opened
+      if (!document.body.classList.contains("unlocked")) return;
+
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
       const progress  = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
@@ -1557,7 +1576,7 @@
       }
     }
     window.addEventListener("scroll", updatePageSlider, { passive: true });
-    updatePageSlider();
+    // Don't call on load — envelope is still showing
 
     /* ---- RSVP Form submit ---- */
     const SCRIPT_URL = window.__RSVP_URL__ || "";
