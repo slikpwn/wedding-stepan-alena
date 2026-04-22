@@ -75,6 +75,24 @@
       cursor: pointer;
       transition: opacity .8s ease, visibility .8s ease;
     }
+    /* Flap animation */
+    .env-flap {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      /* height = top triangle = ~52% of viewport */
+      height: 52%;
+      transform-origin: top center;
+      transform: rotateX(0deg);
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+      /* perspective needed on parent */
+    }
+    #envelope-overlay {
+      perspective: 900px;
+    }
+    #envelope-overlay.opening .env-flap {
+      transform: rotateX(-160deg);
+    }
     #envelope-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
     /* SVG envelope fills full screen */
@@ -162,6 +180,20 @@
       font-weight: 700;
       line-height: 1.2;
     }
+    /* Countdown under env-bottom */
+    .env-countdown {
+      margin-top: 10px;
+      font-family: var(--font-main);
+      font-size: clamp(11px, 3vw, 13px);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: var(--accent-dark);
+      opacity: 0.65;
+    }
+    .env-countdown strong {
+      font-weight: 600;
+      opacity: 1;
+    }
 
     #main-content { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
     #main-content.visible { opacity: 1; transform: none; }
@@ -200,6 +232,40 @@
       transition:
         opacity  0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
         transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* =====================
+       ORNAMENTAL DIVIDERS
+       ===================== */
+    .ornament-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: clamp(40px, 9vw, 56px) auto 0;
+      max-width: 260px;
+      opacity: 0.5;
+      color: var(--accent);
+    }
+    .ornament-divider-line {
+      flex: 1;
+      height: 1px;
+      background: currentColor;
+    }
+    .ornament-divider-mark {
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      line-height: 1;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    .ornament-divider-mark span {
+      display: block;
+      width: 4px;
+      height: 4px;
+      border: 1px solid currentColor;
+      transform: rotate(45deg);
     }
 
     /* Screen 2 — Love Story */
@@ -524,6 +590,27 @@
       opacity: 0.9;
     }
 
+    /* Venue photo parallax */
+    .venue-photo-wrap {
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      margin: 0 auto 16px;
+      aspect-ratio: 16 / 9;
+    }
+    .venue-photo {
+      display: block;
+      width: 100%;
+      height: 120%;
+      max-width: 100%;
+      margin: 0;
+      object-fit: cover;
+      object-position: center 0%;
+      border-radius: 0;
+      will-change: transform;
+      transition: none;
+    }
+
     /* Screen 5 — Venue */
     .venue-section {
       margin-top: 0;
@@ -557,16 +644,7 @@
       line-height: 1.55;
       margin-bottom: 14px;
     }
-    .venue-photo {
-      display: block;
-      width: 100%;
-      max-width: 100%;
-      aspect-ratio: 16 / 9;
-      background: linear-gradient(160deg, #d8cfc8, #a89080);
-      margin: 0 auto 16px;
-      object-fit: cover;
-      border-radius: 4px;
-    }
+    /* venue-photo is now inside .venue-photo-wrap, see above */
     .venue-btn {
       display: inline-block;
       background: var(--accent);
@@ -586,6 +664,43 @@
     }
     .venue-btn:hover { opacity: 0.88; transform: translateY(-1px); }
     .subtitle-script { font-size: 41px; line-height: .9; }
+
+    /* Polaroid hover/tap */
+    .photo-card {
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.35s ease;
+    }
+    .photo-card:hover {
+      transform: rotate(2deg) translateY(-6px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.10);
+    }
+    @media (hover: none) {
+      /* Touch devices: tap triggers the lift briefly */
+      .photo-card:active {
+        transform: rotate(1.5deg) translateY(-4px) scale(1.01);
+        box-shadow: 0 12px 36px rgba(0,0,0,0.16);
+      }
+    }
+
+    /* RSVP success animation */
+    @keyframes successFadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes heartPop {
+      0%   { transform: translateY(0) scale(0); opacity: 1; }
+      60%  { transform: translateY(-40px) scale(1.2); opacity: 0.9; }
+      100% { transform: translateY(-70px) scale(0.8); opacity: 0; }
+    }
+    .rsvp-heart-burst {
+      position: absolute;
+      pointer-events: none;
+      font-size: 18px;
+      animation: heartPop 1s ease-out forwards;
+    }
+    #rsvpSuccess.visible {
+      animation: successFadeUp 0.7s cubic-bezier(0.22, 0.68, 0, 1) both;
+    }
 
     /* Screen 7 — Dress Code */
     .dresscode-section {
@@ -1184,20 +1299,25 @@
 </head>
 <body>
   <div id="envelope-overlay">
-    <!-- Full-screen envelope lines -->
+    <!-- Full-screen envelope lines (static background) -->
     <svg class="env-svg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- top-left corner → center (X intersection) -->
-      <line x1="0" y1="0" x2="500" y2="370" stroke="#66000e" stroke-width="1"/>
-      <!-- top-right corner → center -->
-      <line x1="1000" y1="0" x2="500" y2="370" stroke="#66000e" stroke-width="1"/>
       <!-- bottom-left corner → center -->
       <line x1="0" y1="700" x2="500" y2="370" stroke="#66000e" stroke-width="1"/>
       <!-- bottom-right corner → center -->
       <line x1="1000" y1="700" x2="500" y2="370" stroke="#66000e" stroke-width="1"/>
     </svg>
 
-    <!-- Script text in upper triangle -->
-    <p class="env-top">Приглашаем на<br>нашу свадьбу</p>
+    <!-- Flap: upper triangle that folds up on open -->
+    <div class="env-flap" id="envFlap">
+      <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- top-left corner → center -->
+        <line x1="0" y1="0" x2="500" y2="370" stroke="#66000e" stroke-width="1"/>
+        <!-- top-right corner → center -->
+        <line x1="1000" y1="0" x2="500" y2="370" stroke="#66000e" stroke-width="1"/>
+      </svg>
+      <!-- Script text lives inside the flap -->
+      <p class="env-top">Приглашаем на<br>нашу свадьбу</p>
+    </div>
 
     <!-- Wax seal at center intersection -->
     <button class="seal" id="openBtn" aria-label="Открыть приглашение">
@@ -1214,10 +1334,12 @@
     <div class="env-bottom">
       <p>with love,</p>
       <p>Степан и Алена</p>
+      <p class="env-countdown" id="envCountdown"></p>
     </div>
   </div>
 
   <main class="page" id="main-content">
+    <!-- Ornament divider: before calendar (after kids section) is added via JS -->
     <section class="kids-section">
       <h2 class="kids-title" data-r="up">СТЕПАН И АЛЕНА</h2>
       <div class="kids-wrap">
@@ -1244,6 +1366,12 @@
           <p class="kids-bottom-note" data-r="right" data-d="4">– ей буду я!</p>
         </div>
 
+      </div>
+      <!-- Ornament divider between block 2 and 3 -->
+      <div class="ornament-divider" data-r="fade" data-d="5" aria-hidden="true">
+        <span class="ornament-divider-line"></span>
+        <span class="ornament-divider-mark"><span></span><span></span><span></span></span>
+        <span class="ornament-divider-line"></span>
       </div>
     </section>
 
@@ -1387,8 +1515,18 @@
         <h2 class="venue-title" data-r="up">МЕСТО<br>ПРОВЕДЕНИЯ</h2>
         <span class="venue-script" data-r="up" data-d="1">NelBosco</span>
         <p class="venue-address" data-r="up" data-d="2">Наше торжество состоится по адресу:<br>Липкинское шоссе, 2-й километр, с7/1, посёлок Вешки, городской округ Мытищи, Московская область</p>
-        <img class="venue-photo" data-r="scale" data-d="3" src="venue-table.png" alt="Праздничный стол NelBosco">
+        <!-- Wrap photo for parallax -->
+        <div class="venue-photo-wrap" data-r="scale" data-d="3">
+          <img class="venue-photo" id="venuePhoto" src="venue-table.png" alt="Праздничный стол NelBosco">
+        </div>
         <a class="venue-btn" data-r="up" data-d="4" href="https://yandex.ru/maps/org/nelbosco/180865298224/?ll=37.571462%2C55.920860&z=16" target="_blank" rel="noopener">ПОСМОТРЕТЬ НА КАРТЕ</a>
+
+        <!-- Ornament divider between venue and dresscode -->
+        <div class="ornament-divider" data-r="fade" data-d="5" aria-hidden="true" style="margin-top: clamp(48px,10vw,64px);">
+          <span class="ornament-divider-line"></span>
+          <span class="ornament-divider-mark"><span></span><span></span><span></span></span>
+          <span class="ornament-divider-line"></span>
+        </div>
       </div>
 
     </section>
@@ -1504,7 +1642,7 @@
       </form>
 
       <!-- Success message -->
-      <div id="rsvpSuccess" style="display:none; text-align:center; padding: 32px 0;">
+      <div id="rsvpSuccess" style="display:none; text-align:center; padding: 32px 0; position:relative;">
         <p style="font-family:'Great Vibes',cursive; font-size:clamp(2rem,8vw,3rem); color:#66000e; line-height:1.2; margin:0 0 12px;">Спасибо!</p>
         <p style="font-family:'Jost',sans-serif; font-size:14px; font-weight:300; color:#3a2020; line-height:1.7;">Мы получили вашу анкету<br>и будем вас ждать ♡</p>
       </div>
@@ -1616,16 +1754,31 @@
       document.querySelectorAll("[data-r]").forEach(el => revealObs.observe(el));
     }
 
-    /* ---- Envelope open ---- */
+    /* ---- Countdown on envelope ---- */
+    (function() {
+      const wedding = new Date("2026-08-29T17:00:00+03:00");
+      const el = document.getElementById("envCountdown");
+      if (!el) return;
+      const diff = Math.ceil((wedding - Date.now()) / 86400000);
+      if (diff > 0) {
+        el.innerHTML = `осталось <strong>${diff}</strong> дн${diff % 10 === 1 && diff % 100 !== 11 ? 'ень' : (diff % 10 >= 2 && diff % 10 <= 4 && (diff % 100 < 10 || diff % 100 >= 20) ? 'я' : 'ей')}`;
+      }
+    })();
+
+    /* ---- Envelope open with flap animation ---- */
     function openEnvelope() {
-      overlay.classList.add("hidden");
-      document.body.classList.add("unlocked");
+      overlay.addEventListener("click", () => {}, { once: true }); // prevent double-fire
+      overlay.classList.add("opening");
       setTimeout(() => {
-        content.classList.add("visible");
-        setTimeout(initReveal, 320);
-      }, 200);
+        overlay.classList.add("hidden");
+        document.body.classList.add("unlocked");
+        setTimeout(() => {
+          content.classList.add("visible");
+          setTimeout(initReveal, 320);
+        }, 200);
+      }, 680); // wait for flap animation
     }
-    overlay.addEventListener("click", openEnvelope);
+    overlay.addEventListener("click", openEnvelope, { once: true });
 
     /* ---- Progress bar ---- */
     function updatePageSlider() {
@@ -1655,6 +1808,23 @@
     }
     window.addEventListener("scroll", updatePageSlider, { passive: true });
     // Don't call on load — envelope is still showing
+
+    /* ---- Venue photo parallax ---- */
+    const venuePhoto = document.getElementById("venuePhoto");
+    if (venuePhoto) {
+      const venueWrap = venuePhoto.parentElement;
+      function updateParallax() {
+        if (!document.body.classList.contains("unlocked")) return;
+        const rect = venueWrap.getBoundingClientRect();
+        const vh   = window.innerHeight;
+        // progress: 0 when top at bottom of screen, 1 when top at top
+        const progress = 1 - Math.min(Math.max(rect.top / vh, 0), 1);
+        // shift image by up to 15% to create parallax
+        const shift = (progress - 0.5) * 20;
+        venuePhoto.style.objectPosition = `center ${shift}%`;
+      }
+      window.addEventListener("scroll", updateParallax, { passive: true });
+    }
 
     /* ---- Audio player ---- */
     const bgAudio  = document.getElementById("bgAudio");
@@ -1726,7 +1896,24 @@
         });
         // no-cors means we can’t read response, but if no exception — it went through
         document.getElementById("rsvpForm").style.display = "none";
-        document.getElementById("rsvpSuccess").style.display = "block";
+        const successEl = document.getElementById("rsvpSuccess");
+        successEl.style.display = "block";
+        successEl.classList.add("visible");
+        // burst hearts
+        const colors = ["\u2764","\u2665","\u2661"];
+        for (let i = 0; i < 8; i++) {
+          setTimeout(() => {
+            const h = document.createElement("span");
+            h.className = "rsvp-heart-burst";
+            h.textContent = colors[i % colors.length];
+            h.style.left = `${20 + Math.random() * 60}%`;
+            h.style.bottom = "50%";
+            h.style.color = `hsl(${345 + Math.random() * 20}, ${60 + Math.random() * 20}%, ${35 + Math.random() * 15}%)`;
+            h.style.animationDelay = `${Math.random() * 0.3}s`;
+            successEl.appendChild(h);
+            setTimeout(() => h.remove(), 1300);
+          }, i * 80);
+        }
       } catch (err) {
         btn.textContent = "Отправить";
         btn.disabled = false;
