@@ -1168,8 +1168,8 @@
       bottom: 24px;
       left: 20px;
       z-index: 40;
-      width: 44px;
-      height: 44px;
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       background: rgba(254, 249, 243, 0.92);
       border: 1.5px solid rgba(102, 0, 14, 0.25);
@@ -1193,19 +1193,19 @@
       background: rgba(254, 249, 243, 1);
     }
     .music-btn svg {
-      width: 42px;
-      height: 42px;
+      width: 48px;
+      height: 48px;
       display: block;
+      overflow: hidden;
     }
     /* Circular text on vinyl */
     .vinyl-text {
       font-family: var(--font-main);
-      font-size: 3.5px;
-      font-weight: 500;
-      letter-spacing: 0.55px;
-      text-transform: uppercase;
+      font-size: 2.8px;
+      font-weight: 400;
+      letter-spacing: 0.45px;
       fill: #66000e;
-      opacity: 0.75;
+      opacity: 0.72;
     }
     .vinyl-text-stop {
       display: none;
@@ -1716,29 +1716,21 @@
   <button class="music-btn" id="musicBtn" aria-label="Включить музыку">
     <svg class="icon-vinyl" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <!-- Path for circular text — slightly inside outer ring -->
-        <path id="vinyl-arc-play"
-          d="M 12,12 m -8.2,0 a 8.2,8.2 0 1,1 16.4,0 a 8.2,8.2 0 1,1 -16.4,0"
-        />
-        <path id="vinyl-arc-stop"
-          d="M 12,12 m -8.2,0 a 8.2,8.2 0 1,1 16.4,0 a 8.2,8.2 0 1,1 -16.4,0"
+        <!-- Arc r=9 — text sits just inside the button circle -->
+        <path id="vinyl-arc-cw"
+          d="M 12,3 a 9,9 0 1,1 -0.001,0"
         />
       </defs>
-      <!-- Outer circle -->
-      <circle cx="12" cy="12" r="10" stroke="#66000e" stroke-width="1.4"/>
-      <!-- Inner circle -->
-      <circle cx="12" cy="12" r="3.5" stroke="#66000e" stroke-width="1.4"/>
-      <!-- Center dot -->
-      <circle cx="12" cy="12" r="1" fill="#66000e"/>
-      <!-- Groove -->
-      <circle cx="12" cy="12" r="6.5" stroke="#66000e" stroke-width="0.7" stroke-dasharray="2 3"/>
-      <!-- Text: ВКЛЮЧИТЬ МУЗЫКУ (shown when paused) -->
+      <!-- Inner vinyl: small record label look -->
+      <circle cx="12" cy="12" r="5" stroke="#66000e" stroke-width="1" opacity="0.5"/>
+      <circle cx="12" cy="12" r="2.2" stroke="#66000e" stroke-width="0.9" opacity="0.6"/>
+      <circle cx="12" cy="12" r="0.9" fill="#66000e" opacity="0.8"/>
+      <!-- Circular text: follows the arc -->
       <text class="vinyl-text vinyl-text-play">
-        <textPath href="#vinyl-arc-play" startOffset="50%" text-anchor="middle">♦ ВКЛЮЧИТЬ МУЗЫКУ ♦</textPath>
+        <textPath href="#vinyl-arc-cw" startOffset="50%" text-anchor="middle">• включить музыку •</textPath>
       </text>
-      <!-- Text: ОСТАНОВИТЬ (shown when playing) -->
       <text class="vinyl-text vinyl-text-stop">
-        <textPath href="#vinyl-arc-stop" startOffset="50%" text-anchor="middle">♦ ОСТАНОВИТЬ МУЗЫКУ ♦</textPath>
+        <textPath href="#vinyl-arc-cw" startOffset="50%" text-anchor="middle">• остановить •</textPath>
       </text>
     </svg>
   </button>
