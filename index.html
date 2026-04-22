@@ -804,11 +804,13 @@
     }
     .final-photo {
       display: block;
-      width: min(100%, 500px);
+      width: 100%;
+      max-width: 100%;
       aspect-ratio: 3 / 4;
       margin: 0 auto;
       object-fit: cover;
       object-position: center top;
+      filter: grayscale(1) contrast(1.1);
       background: linear-gradient(145deg, #dfdfdf, #bdbdbd);
     }
 
@@ -1207,7 +1209,7 @@
 
       <!-- Polaroid photo card -->
       <div class="photo-card" data-r="scale">
-        <div class="img"></div>
+        <img class="img" src="photo-polaroid.jpg" alt="Степан и Алена" style="width:100%; display:block; object-fit:cover; object-position:center top;">
         <div class="caption">
           <span class="cap-script">любить</span><span class="cap-jost"> каждый день</span><br>
           <span class="cap-jost">все сильнее</span>
@@ -1371,9 +1373,9 @@
       <p class="wishes-body-2" data-r="up" data-d="3">Мы бы хотели, чтобы в день нашей свадьбы вы вдоволь повеселились и отдохнули, поэтому мы решили устроить праздник без детей</p>
     </section>
 
-    <!-- Screen 9: Final photo (couple) -->
+    <!-- Screen 9: Final photo (couple, full-width B&W) -->
     <section class="final-photo-section">
-      <img class="final-photo" src="photo-couple.jpg" alt="Степан и Алена">
+      <img class="final-photo" src="photo-final.jpg" alt="Степан и Алена">
     </section>
 
     <!-- Screen 10: RSVP Form -->

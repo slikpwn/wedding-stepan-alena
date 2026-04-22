@@ -1,1 +1,2 @@
+// RSVP form endpoint
 window.__RSVP_URL__ = "https://script.google.com/macros/s/AKfycbw3BEjXKngGUlODOVNXcH7zraF9ipjP0uGIuy_g6DhR6zcWYCC5tIGMXnwTPoPTAgpo7w/exec";
