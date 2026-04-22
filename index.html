@@ -88,13 +88,13 @@
     /* Script text in upper triangle */
     .env-top {
       position: absolute;
-      top: 20%;
+      top: 18%;
       left: 50%;
-      transform: translateX(-40%);
+      transform: translateX(-50%);
       font-family: var(--font-script);
-      font-size: clamp(20px, 6vw, 36px);
+      font-size: clamp(26px, 7vw, 42px);
       color: var(--accent-dark);
-      line-height: 1.3;
+      line-height: 1.35;
       text-align: center;
       pointer-events: none;
       white-space: nowrap;
@@ -282,7 +282,7 @@
     }
 
     /* Screen 3 — Calendar + Message */
-    .calendar-section { margin-top: var(--section-gap); text-align: center; padding: 0 var(--section-px); }
+    .calendar-section { margin-top: clamp(64px, 14vw, 88px); text-align: center; padding: 0 var(--section-px); }
     .calendar-month {
       font-family: var(--font-main);
       font-size: clamp(18px, 5vw, 24px);
@@ -342,7 +342,7 @@
 
     /* Message below calendar */
     .calendar-message {
-      margin-top: 40px;
+      margin-top: clamp(32px, 8vw, 48px);
       text-align: center;
     }
     .calendar-message .script-heading {
@@ -371,7 +371,7 @@
 
     /* Screen 4 — Photo card + Timing */
     .block4-section {
-      margin-top: var(--section-gap);
+      margin-top: clamp(64px, 14vw, 88px);
       padding: 0;
       position: relative;
     }
@@ -527,7 +527,7 @@
     /* Screen 5 — Venue */
     .venue-section {
       margin-top: 0;
-      padding: 0 var(--section-px) clamp(48px, 10vw, 64px);
+      padding: clamp(16px, 4vw, 24px) var(--section-px) clamp(56px, 12vw, 72px);
       text-align: center;
     }
     .venue-title {
@@ -538,7 +538,7 @@
       letter-spacing: 0.04em;
       color: var(--accent-dark);
       line-height: 1.1;
-      margin-top: 36px;
+      margin-top: 0;
       margin-bottom: 6px;
     }
     .venue-script {
@@ -590,7 +590,7 @@
     /* Screen 7 — Dress Code */
     .dresscode-section {
       background: var(--bg);
-      padding: clamp(56px, 12vw, 80px) var(--section-px) clamp(60px, 12vw, 80px);
+      padding: clamp(64px, 14vw, 88px) var(--section-px) clamp(64px, 14vw, 88px);
       text-align: center;
     }
     .dc-title {
@@ -719,7 +719,7 @@
       background: var(--accent);
       color: #fff;
       text-align: center;
-      padding: clamp(56px, 12vw, 80px) clamp(24px, 6vw, 48px) clamp(64px, 14vw, 88px);
+      padding: clamp(72px, 16vw, 96px) clamp(24px, 6vw, 48px) clamp(72px, 16vw, 96px);
       position: relative;
       width: 100vw;
       margin-left: calc(-50vw + 50%);
@@ -821,7 +821,7 @@
     /* Screen 10 — RSVP Form */
     .rsvp-section {
       background: var(--bg);
-      padding: clamp(56px, 12vw, 80px) var(--section-px) clamp(64px, 14vw, 88px);
+      padding: clamp(72px, 16vw, 96px) var(--section-px) clamp(72px, 16vw, 96px);
     }
     .rsvp-header {
       text-align: center;
@@ -1054,6 +1054,65 @@
     html, body {
       max-width: 100%;
       overflow-x: hidden;
+    }
+
+    /* =====================
+       AUDIO PLAYER BUTTON
+       ===================== */
+    .music-btn {
+      position: fixed;
+      bottom: 24px;
+      left: 20px;
+      z-index: 40;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(254, 249, 243, 0.92);
+      border: 1.5px solid rgba(102, 0, 14, 0.25);
+      box-shadow: 0 4px 20px rgba(102, 0, 14, 0.18);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.4s ease, transform 0.4s ease, background 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    body.unlocked .music-btn {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .music-btn:hover {
+      background: rgba(254, 249, 243, 1);
+    }
+    .music-btn svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+    /* Spinning vinyl animation when playing */
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .music-btn.playing .icon-vinyl {
+      animation: spin 3s linear infinite;
+    }
+    /* Subtle pulse ring when playing */
+    .music-btn.playing::after {
+      content: "";
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1px solid rgba(102, 0, 14, 0.2);
+      animation: ringPulse 2s ease-out infinite;
+    }
+    @keyframes ringPulse {
+      0%   { transform: scale(1); opacity: 0.7; }
+      100% { transform: scale(1.4); opacity: 0; }
     }
 
     /* Hide native browser scrollbar everywhere */
@@ -1516,6 +1575,24 @@
     <div class="page-slider-fill" id="pageSliderFill"></div>
   </div>
 
+  <!-- Music player button -->
+  <button class="music-btn" id="musicBtn" aria-label="Включить музыку">
+    <!-- Vinyl / note icon — switches state -->
+    <svg class="icon-vinyl" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Outer circle -->
+      <circle cx="12" cy="12" r="10" stroke="#66000e" stroke-width="1.4"/>
+      <!-- Inner circle -->
+      <circle cx="12" cy="12" r="3.5" stroke="#66000e" stroke-width="1.4"/>
+      <!-- Center dot -->
+      <circle cx="12" cy="12" r="1" fill="#66000e"/>
+      <!-- Groove lines -->
+      <circle cx="12" cy="12" r="6.5" stroke="#66000e" stroke-width="0.7" stroke-dasharray="2 3"/>
+    </svg>
+  </button>
+
+  <!-- Hidden audio element -->
+  <audio id="bgAudio" loop preload="none"></audio>
+
   <!-- config.js не коммитится в git, хранит RSVP URL -->
   <script src="config.js"></script>
   <script>
@@ -1577,6 +1654,51 @@
     }
     window.addEventListener("scroll", updatePageSlider, { passive: true });
     // Don't call on load — envelope is still showing
+
+    /* ---- Audio player ---- */
+    const bgAudio  = document.getElementById("bgAudio");
+    const musicBtn = document.getElementById("musicBtn");
+
+    // Tracks — public domain via Wikimedia Commons
+    const TRACKS = [
+      // Chopin — Waltz in A minor (B.150) — no copyright
+      "https://upload.wikimedia.org/wikipedia/commons/f/f9/Chopin_-_Waltz_in_A_minor%2C_B_150.ogg",
+      // Erik Satie — Gymnopédie No.1 — public domain
+      "https://upload.wikimedia.org/wikipedia/commons/9/90/Erik_Satie_-_gymnopedies_-_la_1_ere._lent_et_douloureux.ogg",
+      // Chopin — Nocturne Op.9 No.2 — public domain
+      "https://upload.wikimedia.org/wikipedia/commons/f/fd/Chopin_Nocturne_Op_9_No_2.ogg"
+    ];
+    let trackIndex = 0;
+    let musicReady = false;
+
+    function loadTrack(idx) {
+      bgAudio.src = TRACKS[idx];
+      bgAudio.load();
+    }
+
+    bgAudio.addEventListener("ended", () => {
+      // When loop exhausts (shouldn't with loop attr, but fallback)
+      trackIndex = (trackIndex + 1) % TRACKS.length;
+      loadTrack(trackIndex);
+      bgAudio.play().catch(() => {});
+    });
+
+    musicBtn.addEventListener("click", () => {
+      if (!musicReady) {
+        loadTrack(trackIndex);
+        musicReady = true;
+      }
+      if (bgAudio.paused) {
+        bgAudio.play().then(() => {
+          musicBtn.classList.add("playing");
+          musicBtn.setAttribute("aria-label", "Отключить музыку");
+        }).catch(() => {});
+      } else {
+        bgAudio.pause();
+        musicBtn.classList.remove("playing");
+        musicBtn.setAttribute("aria-label", "Включить музыку");
+      }
+    });
 
     /* ---- RSVP Form submit ---- */
     const SCRIPT_URL = window.__RSVP_URL__ || "";
