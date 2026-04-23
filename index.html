@@ -693,7 +693,7 @@
     /* Screen 7 — Dress Code */
     .dresscode-section {
       background: var(--bg);
-      /* margin-top handled by global section rule — no extra top padding needed */
+      margin-top: clamp(32px, 7vw, 48px) !important; /* ornament above already provides separation */
       padding: 0 var(--section-px) 0;
       text-align: center;
       position: relative;
@@ -781,14 +781,17 @@
     }
     .dc-swatch-label {
       font-family: var(--font-main);
-      font-size: clamp(9px, 2.4vw, 11px);
+      font-size: clamp(8px, 2.1vw, 10px);
       font-weight: 500;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       color: #5a3535;
       text-align: center;
       line-height: 1.3;
-      max-width: clamp(56px, 15vw, 76px);
+      width: clamp(60px, 16vw, 80px);
+      word-break: break-word;
+      hyphens: auto;
+      display: block;
     }
     /* Men's note — elegant card */
     .dc-men-note {
