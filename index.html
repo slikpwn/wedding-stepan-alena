@@ -694,8 +694,21 @@
     .dresscode-section {
       background: var(--bg);
       /* margin-top handled by global section rule — no extra top padding needed */
-      padding: 0 var(--section-px) clamp(64px, 14vw, 88px);
+      padding: 0 var(--section-px) 0;
       text-align: center;
+      position: relative;
+    }
+    /* Wave at the bottom of dresscode → transitions into wishes burgundy */
+    .dresscode-section::after {
+      content: "";
+      display: block;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      height: clamp(40px, 10vw, 56px);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 56' preserveAspectRatio='none'%3E%3Cpath d='M0 0 Q30 56 60 0 Q90 56 120 0 Q150 56 180 0 Q210 56 240 0 Q270 56 300 0 Q330 56 360 0 L360 56 L0 56 Z' fill='%2366000e'/%3E%3C/svg%3E");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      margin-top: clamp(48px, 12vw, 72px);
     }
     .dc-title {
       font-family: var(--font-main);
@@ -823,26 +836,15 @@
       background: var(--accent);
       color: #fff;
       text-align: center;
-      padding: clamp(72px, 16vw, 96px) clamp(24px, 6vw, 48px) clamp(72px, 16vw, 96px);
+      padding: clamp(48px, 12vw, 72px) clamp(24px, 6vw, 48px) clamp(72px, 16vw, 96px);
       position: relative;
       width: 100vw;
       margin-left: calc(-50vw + 50%);
+      margin-top: 0 !important;
       box-sizing: border-box;
       overflow-x: hidden;
     }
-    /* Scallop wave sits above the section, attached to its top */
-    .wishes-section::before {
-      content: "";
-      display: block;
-      position: absolute;
-      top: -34px;
-      left: 0;
-      right: 0;
-      height: 36px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 36' preserveAspectRatio='none'%3E%3Cpath d='M0 36 Q30 0 60 36 Q90 0 120 36 Q150 0 180 36 Q210 0 240 36 Q270 0 300 36 Q330 0 360 36 L360 36 L0 36 Z' fill='%2366000e'/%3E%3C/svg%3E");
-      background-size: 100% 100%;
-      background-repeat: no-repeat;
-    }
+    /* No pseudo-wave needed — wave is rendered via dresscode::after */
     .wishes-title {
       font-family: var(--font-main);
       font-weight: 700;
