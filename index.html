@@ -1747,7 +1747,7 @@
         <!-- 1. Name -->
         <div class="rsvp-group" data-r="up" data-d="3">
           <label class="rsvp-label">Имя и Фамилия</label>
-          <input class="rsvp-input" type="text" autocomplete="name">
+          <input class="rsvp-input" type="text" id="guestName" autocomplete="name" required placeholder="Введите имя и фамилию">
         </div>
 
         <!-- 2. Attendance -->
@@ -2025,6 +2025,22 @@
 
     document.getElementById("rsvpForm").addEventListener("submit", async function(e) {
       e.preventDefault();
+
+      // Validate name
+      const nameInput = document.getElementById("guestName");
+      if (!nameInput.value.trim()) {
+        nameInput.focus();
+        nameInput.style.borderColor = "#66000e";
+        nameInput.style.boxShadow = "0 2px 0 0 #66000e";
+        nameInput.placeholder = "Пожалуйста, введите имя и фамилию";
+        nameInput.addEventListener("input", () => {
+          nameInput.style.borderColor = "";
+          nameInput.style.boxShadow = "";
+          nameInput.placeholder = "Введите имя и фамилию";
+        }, { once: true });
+        return;
+      }
+
       const btn = document.getElementById("rsvpBtn");
       btn.textContent = "Отправляем...";
       btn.disabled = true;
