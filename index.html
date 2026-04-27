@@ -726,11 +726,11 @@
       opacity: 0.45;
     }
     .dc-bride-dress {
-      width: 52px;
+      width: 44px;
       height: auto;
       display: block;
       margin: 0 auto 14px;
-      opacity: 0.7;
+      opacity: 0.72;
     }
     .dc-bride-text {
       font-family: var(--font-script);
@@ -845,8 +845,7 @@
       text-align: center;
       padding: 22px 24px 20px;
     }
-    .dc-men-note::before,
-    .dc-men-note::after {
+    .dc-men-note::before {
       content: "";
       position: absolute;
       left: 50%;
@@ -855,9 +854,8 @@
       height: 1px;
       background: var(--accent);
       opacity: 0.4;
+      top: 0;
     }
-    .dc-men-note::before { top: 0; }
-    .dc-men-note::after  { bottom: 0; }
     .dc-men-note-label {
       font-family: var(--font-script);
       font-size: clamp(18px, 5vw, 24px);
@@ -1671,26 +1669,25 @@
           <span class="dc-bride-divider-dot"></span>
           <span class="dc-bride-divider-line"></span>
         </div>
-        <svg class="dc-bride-dress" viewBox="0 0 64 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Свадебное платье">
-          <!-- Bodice -->
-          <path d="M24 18 C20 18 17 22 17 26 L17 42 L47 42 L47 26 C47 22 44 18 40 18 Z" fill="none" stroke="#66000e" stroke-width="1.2"/>
-          <!-- Neckline sweetheart -->
-          <path d="M24 18 Q28 13 32 16 Q36 13 40 18" fill="none" stroke="#66000e" stroke-width="1.2" stroke-linecap="round"/>
-          <!-- Straps -->
-          <path d="M25 18 L26 12" stroke="#66000e" stroke-width="1" stroke-linecap="round"/>
-          <path d="M39 18 L38 12" stroke="#66000e" stroke-width="1" stroke-linecap="round"/>
+        <svg class="dc-bride-dress" viewBox="0 0 40 88" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Свадебное платье">
+          <!-- Thin shoulder straps -->
+          <line x1="16" y1="6" x2="17" y2="14" stroke="#66000e" stroke-width="0.8" stroke-linecap="round"/>
+          <line x1="24" y1="6" x2="23" y2="14" stroke="#66000e" stroke-width="0.8" stroke-linecap="round"/>
+          <!-- Sweetheart neckline -->
+          <path d="M14 14 Q17 10 20 13 Q23 10 26 14" fill="none" stroke="#66000e" stroke-width="1" stroke-linecap="round"/>
+          <!-- Slim bodice -->
+          <path d="M14 14 C12 16 11 20 12 24 L13 30 L27 30 L28 24 C29 20 28 16 26 14 Z" fill="none" stroke="#66000e" stroke-width="1"/>
           <!-- Waist seam -->
-          <line x1="17" y1="42" x2="47" y2="42" stroke="#66000e" stroke-width="0.8" opacity="0.5"/>
-          <!-- Skirt — A-line with layers -->
-          <path d="M17 42 Q8 58 4 78 Q4 84 8 86 L56 86 Q60 84 60 78 Q56 58 47 42 Z" fill="none" stroke="#66000e" stroke-width="1.2"/>
-          <!-- Skirt layer hint -->
-          <path d="M19 54 Q12 68 8 82" stroke="#66000e" stroke-width="0.5" opacity="0.4" stroke-linecap="round"/>
-          <path d="M45 54 Q52 68 56 82" stroke="#66000e" stroke-width="0.5" opacity="0.4" stroke-linecap="round"/>
-          <!-- Train bottom wave -->
-          <path d="M4 86 Q10 90 16 86 Q22 90 28 86 Q34 90 40 86 Q46 90 52 86 Q58 90 60 86" fill="none" stroke="#66000e" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/>
-          <!-- Bow at waist -->
-          <path d="M29 42 Q32 39 35 42 Q32 45 29 42 Z" fill="#66000e" opacity="0.25"/>
-          <line x1="32" y1="42" x2="32" y2="46" stroke="#66000e" stroke-width="0.7" opacity="0.4"/>
+          <line x1="13" y1="30" x2="27" y2="30" stroke="#66000e" stroke-width="0.7" opacity="0.45"/>
+          <!-- Small bow at waist -->
+          <path d="M18 30 Q20 28 22 30 Q20 32 18 30Z" fill="#66000e" opacity="0.2"/>
+          <!-- Flared A-line skirt -->
+          <path d="M13 30 Q6 50 3 70 Q2 76 5 78 L35 78 Q38 76 37 70 Q34 50 27 30 Z" fill="none" stroke="#66000e" stroke-width="1"/>
+          <!-- Subtle inner layer lines -->
+          <path d="M14 38 Q9 56 6 74" stroke="#66000e" stroke-width="0.4" opacity="0.3" stroke-linecap="round"/>
+          <path d="M26 38 Q31 56 34 74" stroke="#66000e" stroke-width="0.4" opacity="0.3" stroke-linecap="round"/>
+          <!-- Hem wave -->
+          <path d="M3 78 Q7 82 11 78 Q15 82 20 78 Q25 82 29 78 Q33 82 37 78" fill="none" stroke="#66000e" stroke-width="0.7" opacity="0.55" stroke-linecap="round"/>
         </svg>
         <p class="dc-bride-text">Также мы будем признательны, если в белом<br>будет только невеста</p>
       </div>
